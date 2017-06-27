@@ -31,6 +31,9 @@
         <activity android:name=".PopCatSelect"
             android:theme="@style/AppTheme.CustomTheme2">
         </activity>
+        <activity
+            android:name=".DisplayNote"
+            android:label="Your Note..." />
     </application>
 
 </manifest>
