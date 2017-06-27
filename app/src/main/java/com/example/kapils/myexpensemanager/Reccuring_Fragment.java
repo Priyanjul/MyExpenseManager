@@ -75,7 +75,7 @@ public class Reccuring_Fragment extends Fragment {
         if(requestCode == 3){
             String ch1, ch2, ch3;
             //Toast.makeText(getActivity(),data.getStringExtra("CHOICE"),Toast.LENGTH_SHORT).show();
-            ch1= data.getStringExtra("CHOICE1");
+          /*  ch1= data.getStringExtra("CHOICE1");
             ch2= data.getStringExtra("CHOICE2");
             ch3= data.getStringExtra("CHOICE3");
 
@@ -88,7 +88,7 @@ public class Reccuring_Fragment extends Fragment {
                     new int[]{R.id.itemtitle,R.id.itemamount,R.id.itemdate, R.id.itemcategory},
                     0);
 
-            lv.setAdapter(adapter);
+            lv.setAdapter(adapter);*/
 
         }
     }

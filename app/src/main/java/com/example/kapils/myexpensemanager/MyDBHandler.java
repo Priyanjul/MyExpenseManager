@@ -37,6 +37,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public final String COLUMN_DNT = "dnt";
     public final String COLUMN_STATUS = "status";
 
+    public final String TABLE_NOTES = "notes";
+    public final String COLUMN_NOTE_ID = "_id";
+    public final String COLUMN_NOTE_TITLE = "title";
+    public final String COLUMN_NOTE = "note";
+    public final String COLUMN_DT = "dnt";
+
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -77,6 +83,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 + COLUMN_STATUS + " INTEGER"
                 +"); ";
         db.execSQL(query);
+
+        query = "create table "+TABLE_NOTES+" ("
+                +COLUMN_NOTE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "
+                +COLUMN_NOTE_TITLE+" TEXT, "
+                +COLUMN_NOTE+" TEXT, "
+                +COLUMN_DT+" TEXT"
+                +"); ";
+        db.execSQL(query);
     }
 
     @Override
@@ -84,6 +98,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_TRANSACTION);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_TODOLIST);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NOTES);
+
         onCreate(db);
     }
 
@@ -166,6 +182,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return b;
     }
 
+
+
     public Cursor getAllTasks(){
         String query = "SELECT * FROM "+TABLE_TODOLIST+" ORDER BY "+COLUMN_TASK_ID+ " ASC";
 
@@ -174,11 +192,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return db.rawQuery(query, null);
     }
 
+
     public int deleteTask(String dnt)
     {
          SQLiteDatabase db = getWritableDatabase();
         return db.delete(TABLE_TODOLIST, COLUMN_DNT+" = ?", new String[]{dnt});
     }
+
 
     public int updateStatus(String dnt,int state, String task, char choice)
     {
@@ -200,6 +220,50 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return result;
     }
 
+    public boolean add_dbNote(String title, String note, String dt){
+        boolean b =false;
+        try{
+            SQLiteDatabase db = getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NOTE, note);
+            values.put(COLUMN_NOTE_TITLE, title);
+            values.put(COLUMN_DT, dt);
+
+            db.insert(TABLE_NOTES, null, values);
+            db.close();
+            b = true;
+        }catch (Exception e){
+            b = false;
+        }
+        return b;
+    }
+
+    public Cursor getAllNotes(){
+        String query = "SELECT * FROM "+TABLE_NOTES;
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery(query, null);
+    }
+
+    public int deleteNote(String dt)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(TABLE_NOTES, COLUMN_DT+" =?", new String[]{dt});
+    }
+
+    public int updateNote(String title, String note, String dt){
+        int result = -1;
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTE_TITLE, title);
+        values.put(COLUMN_NOTE, note);
+        values.put(COLUMN_DT, DateFormat.getDateTimeInstance().format(new Date()));
+        result = db.update(TABLE_NOTES, values, COLUMN_DT+" =?", new String[]{dt});
+        return result;
+    }
+
+
+
     /*public Cursor getDWExpense(){
         String query = "SELECT MID("+COLUMN_DATE+",1,) FROM "+TABLE_TRANSACTION;
 
@@ -208,7 +272,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return db.rawQuery(query, null);
     }*/
 
-    public Cursor getExpenseByCat(String cat1, String cat2, String cat3){
+   /* public Cursor getExpenseByCat(String cat1, String cat2, String cat3){
 
 
         Toast.makeText(, cat1, Toast.LENGTH_SHORT).show();
@@ -217,5 +281,5 @@ public class MyDBHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = getReadableDatabase();
 
         return db.rawQuery(query, null);
-    }
+    }*/
 }

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
+   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_todo) {
             fragment = new Todo_Fragment();
 
-        } else if (id == R.id.nav_send) {
-            fragment = new Manage_Fragment();
+        } else if (id == R.id.nav_notes) {
+            fragment = new Notes_Fragment();
 
         }
 
